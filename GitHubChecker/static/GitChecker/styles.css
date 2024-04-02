@@ -1,0 +1,161 @@
+body {
+    background-color: #1a242c; 
+    color: #f0f8ff;
+}
+
+.modal-header, .modal-body, .modal-footer {
+    background-color: #1a242c; 
+    color: #f0f8ff;
+}
+
+.table {
+    border-collapse: separate;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.header-padding {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.custom-link {
+    color: #f0f8ff; 
+    text-decoration: none;
+}
+
+.custom-link:hover {
+    color: #f0f8ff; 
+    text-decoration: underline;
+}
+
+.submit-padding {
+    padding-top: 10px;
+}
+
+.form-fields-padding {
+    padding-top: 5px;
+}
+
+.form-centered {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.login-reg-padding {
+    padding-top: 100px;
+    padding-bottom: 25px;
+}
+
+.search-form {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin: 0 auto;
+    text-align: center;
+    justify-content: center;
+}
+
+.search-input {
+    box-sizing: border-box;
+}
+
+.search-button {
+    width: fit-content;
+}
+
+.tiny-logo-img {
+    max-width: 20px;
+    max-height: auto;
+}
+
+.tiny-logo-link {
+    text-decoration: none;
+    padding-right: 2px;
+}
+
+.logo-img {
+    max-width: 50px;
+    max-height: auto;
+}
+
+.repository-detail-header {
+    font-size: xx-large;
+}
+
+.repository-col-left {
+    padding-left: 25px;
+}
+
+.repository-col-right {
+    padding-right: 25px;
+}
+
+.repository-col-input {
+    min-width: 100%;
+    min-height: 32px;
+    height: 32px;
+}
+
+.repository-param-row {
+    width: 100%;
+    padding-left: 5%; 
+    padding-right: 5%;
+}
+
+.repository-param-col {
+    width: 100%;
+}
+
+.repository-header-padding {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.upper-left-logo {
+    max-height: 40px;
+    max-width: auto;
+    padding-right: 5px;
+}
+
+.jsoneditor textarea.jsoneditor-text, .jsoneditor-navigation-bar, .jsoneditor-expandable, .jsoneditor-frame,
+.jsoneditor, .jsoneditor-statusbar, .jsoneditor-contextmenu, .jsoneditor-search input,
+.jsoneditor-button, .jsoneditor-contextmenu, .jsoneditor-menu, .jsoneditor-modal {
+    background-color: #212529; 
+    color: #f0f8ff; 
+    border-color: #f0f8ff;
+}
+
+.jsoneditor-field, .jsoneditor-value, .jsoneditor-boolean {
+    background-color: #212529; 
+    color: #f0f8ff; 
+    border-color: #f0f8ff;
+}
+
+.json-editor {
+    padding-left: 5%; 
+    padding-right: 5%; 
+    width: 100%; 
+    height: 500px;
+}
+
+.json-viewer {
+    padding-left: 5%; 
+    padding-right: 5%; 
+    width: 100%; 
+    height: fit-content;
+}
+
+.hidden-field {
+    display: none;
+    visibility: hidden;
+}
+
+.log-text-area {
+    white-space: pre-wrap;
+    padding-left: 5%;
+    padding-right: 5%;
+    display: inline-block;
+}

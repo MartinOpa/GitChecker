@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.0/jsoneditor.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.0/jsoneditor.min.js"></script>
+    <script src="{{STATIC_URL}}/static/GitChecker/js/json_editor.js"></script>
+</head>
+<html>
+    {% include "GitChecker/base.header.html" %}
+
+    <div class="row justify-content-center text-center">
+        <div class="col-md-4 form-fields-padding">
+            <div class="row justify-content-center text-center">
+                <h3>Details</h3>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row form-fields-padding">
+                        Repository
+                    </div>
+                    <div class="row form-fields-padding">
+                        Commit timestamp
+                    </div>
+                    <div class="row form-fields-padding">
+                        Commit author
+                    </div>
+                    <div class="row form-fields-padding">
+                        Test timestamp
+                    </div>
+                    <div class="row form-fields-padding">
+                        Version
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row form-fields-padding">
+                        {{ test.repository.repo_name }}
+                    </div>
+                    <div class="row form-fields-padding">
+                        {{ test.commit.timestamp }}
+                    </div>
+                    <div class="row form-fields-padding">
+                        {{ test.commit.author_name }}
+                    </div>
+                    <div class="row form-fields-padding">
+                        {{ test.timestamp }}
+                    </div>
+                    <div class="row form-fields-padding">
+                        {{ test.params.version }}
+                    </div>
+                </div>
+            </div>
+            <div class="row form-fields-padding">
+            </div>
+            <div class="row form-fields-padding">
+            </div>
+            <div class="row form-fields-padding">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row justify-content-center text-center">
+                <h3>Test parameters</h3>
+            </div>
+            <div id="jsoneditor" class="form-fields-padding justify-content-center text-center json-viewer"></div>
+        </div>
+    </div>
+
+
+    <div class="form-fields-padding row justify-content-center text-center">
+        <h3>Logs</h3>
+    </div>
+
+    <div class="form-fields-padding row">
+        <pre class="log-text-area">Summary:</pre>
+        <pre class="log-text-area">{{ summary }}</pre> 
+    </div>
+
+    <div class="form-fields-padding row">
+        <pre class="log-text-area">Detailed log:</pre>
+        <pre class="log-text-area">{{ detailed }}</pre>        
+    </div>
+
+    <script>
+        loadJsonViewer('{{ json_data|escapejs }}');
+    </script>
+</html>
+

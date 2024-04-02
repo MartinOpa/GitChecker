@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% if current_page.paginator.num_pages > 1 %}
+  <nav aria-label="...">
+    <ul class="pagination flex-wrap justify-content-center">
+      <li class="page-item disabled">
+        {% if current_page.number > 3 %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}/../1{% if request.GET.search %}?search={{ request.GET.search }}{% endif %}">1</a>
+          </li>
+        {% endif %}
+        {% if current_page.number > 4 %}
+            <li class="page-item">
+            <span class="page-link">...</span>
+            </li>
+        {% endif %}
+      </li>
+
+      {% for i in current_page.paginator.page_range %}
+        {% if current_page.number == i %}
+          <li class="page-item active">
+            <span class="page-link">
+              {{ i }}
+              <span class="sr-only"></span>
+            </span>
+          </li>
+          {% elif i > current_page.number|add:'-3' and i < current_page.number|add:'3' %}
+            <li class="page-item">
+              <a class="page-link" href="{{ request.path }}/../{{ i }}{% if request.GET.search %}?search={{ request.GET.search }}{% endif %}">{{ i }}</a>
+            </li>
+        {% endif %}
+      {% endfor %}
+
+      {% if current_page.has_next %}
+        {% if current_page.number < current_page.paginator.num_pages|add:'-3' %}
+            <li class="page-item">
+                <span class="page-link">...</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{{ request.path }}/../{{ current_page.paginator.num_pages }}{% if request.GET.search %}?search={{ request.GET.search }}{% endif %}">{{ i }}{{ current_page.paginator.num_pages }}</a>
+            </li>
+        {% elif current_page.number < current_page.paginator.num_pages|add:'-2' %}
+            <li class="page-item">
+                <a class="page-link" href="{{ request.path }}/../{{ current_page.paginator.num_pages }}{% if request.GET.search %}?search={{ request.GET.search }}{% endif %}">{{ i }}{{ current_page.paginator.num_pages }}</a>
+            </li>
+        {% endif %}  
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

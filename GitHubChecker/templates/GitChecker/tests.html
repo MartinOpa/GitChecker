@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    {% include "GitChecker/base.header.html" %}
+
+    {% include "GitChecker/base.search.bar.html" %}
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Repository</th>
+                <th scope="col">Parameter set</th>
+                <th scope="col">Timestamp</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for test in current_page %}
+            <tr onclick="location.href='/test/{{test.id}}';">
+                <th scope="col"> 
+                    <a class="custom-link" href="/repo/{{test.repository.id}}">
+                        {{ test.repository.repo_name }}
+                    </a>
+                </th>
+                <td>
+                    {% if test.params %}
+                        {{ test.params.param_name }}
+                    {% else %}
+                        set deleted
+                    {% endif %}
+                </td>
+                <td>    
+                    {{test.timestamp}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include "GitChecker/base.paginator.html" %}
+</html>
+

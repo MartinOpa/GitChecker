@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    {% include "GitChecker/base.header.html" %}
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Repository</th>
+                <th scope="col">Latest test</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in current_page %}
+            <tr onclick="location.href='/repo/{{entry.0.id}}';">
+                <th scope="col">                        
+                    <a class="tiny-logo-link" href="{{entry.0.url}}" target="_blank">
+                        <img class="tiny-logo-img" src="{{STATIC_URL}}/static/GitChecker/res/github-mark-white.png"/> 
+                    </a>                  
+                    <a class="custom-link" href="/repo/{{entry.0.id}}">
+                        {{entry.0.repo_name}}
+                    </a>
+                </th>           
+                <td>
+                    {% if entry.1 == -1 %}
+                        No tests found
+                    {% else %}                
+                        <a class="custom-link" href="/test/{{entry.1.id}}">
+                            {{entry.1.timestamp}}
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</html>
+

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    {% include "GitChecker/base.header.html" %}
+
+    {% include "GitChecker/base.search.bar.html" %}
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Repository</th>
+                <th scope="col">Author</th>
+                <th scope="col">Message</th>
+                <th scope="col">Commit</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for commit in current_page %}
+            <tr onclick="window.open('{{ commit.commit_url }}', '_blank');">
+                <th scope="col"> 
+                    <a class="custom-link" href="/repo/{{commit.repository.id}}">
+                        {{commit.repository.repo_name}}
+                    </a>
+                </th>
+                <td>
+                    {{commit.author_name}}
+                </td>
+                <td>
+                    {{commit.commit_message}}
+                </td>
+                <td>                      
+                    <a class="tiny-logo-link" href="{{commit.commit_url}}" target="_blank">
+                        <img class="tiny-logo-img" src="{{STATIC_URL}}/static/GitChecker/res/github-mark-white.png"/> 
+                    </a>  
+                    {{commit.timestamp}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include "GitChecker/base.paginator.html" %}
+</html>
+

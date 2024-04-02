@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Checker</title>
+    
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'GitChecker/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'GitChecker/res/favicon.png' %}" >
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col d-flex header-padding">
+                <h3>
+                    <a class="custom-link" href="/">
+                        <img class="upper-left-logo" src="{% static 'GitChecker/res/mrl.png' %}">
+                        Git Checker
+                    </a>
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-reg-padding row justify-content-center">
+        <div class="col d-flex justify-content-end">
+            <img src="{% static 'GitChecker/res/mrl.png' %}">
+        </div>
+        <div class="col d-flex justify-content-start">
+            <img src="{% static 'GitChecker/res/git.png' %}">
+        </div>
+    </div>
+</body>

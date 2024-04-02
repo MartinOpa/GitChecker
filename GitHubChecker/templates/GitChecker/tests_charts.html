@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    {% include "GitChecker/base.header.html" %}
+
+    {% block content %}
+        {% autoescape off %}
+            {{ tests_plot }}
+        {% endautoescape %}
+    {% endblock content %}
+</html>
+
