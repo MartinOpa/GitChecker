@@ -3,7 +3,7 @@
 /.pytest_cache/
 /1unused__samples/
 /GitHubChecker/outputs
-/GitHubChecker/tests
+/GitHubChecker/tests/
 /GitHubChecker/GitChecker/__pycache__/
 /GitHubChecker/GitHubChecker/__pycache__/
 /GitHubChecker/GitChecker/migrations/__pycache__/
