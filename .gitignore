@@ -1,9 +1,13 @@
 /tests/
 /env/
 /.pytest_cache/
+/1unused__samples/
+/GitHubChecker/outputs
+/GitHubChecker/tests
 /GitHubChecker/GitChecker/__pycache__/
 /GitHubChecker/GitHubChecker/__pycache__/
-/GitHubChecker/GitChecker/migrations/
+/GitHubChecker/GitChecker/migrations/__pycache__/
+/GitHubChecker/GitChecker/migrations/__init__.py
 /outputs/
 
 *.sqlite3
