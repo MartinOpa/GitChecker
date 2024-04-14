@@ -24,9 +24,9 @@ from GitChecker import views, webhook
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('webhooks/commit', webhook.postCommit),
+    path('webhooks/commit', webhook.post_commit),
     #path('webhooks/postaction', webhook.postAction),
-    path('tests_charts/', views.tests_charts, name='test_charts'),
+    path('tests_charts/', views.tests_charts, name='tests_charts'),
     path('commits/<int:page>', views.commits, name='commits'),
     path('repos/<int:page>', views.repos, name='repos'),
     path('repo/<int:id>', views.repo_detail, name='repo_detail'),

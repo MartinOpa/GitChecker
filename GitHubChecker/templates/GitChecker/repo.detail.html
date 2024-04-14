@@ -2,10 +2,11 @@
 <head>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.0/jsoneditor.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.0/jsoneditor.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>    
     <script src="{{STATIC_URL}}/static/GitChecker/js/json_editor.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="{{STATIC_URL}}/static/GitChecker/js/themes.js"></script>
 </head>
-<html>
+<body>
     {% include "GitChecker/base.header.html" %}
 
     <div class="col">
@@ -14,108 +15,126 @@
 
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-            <div class="repository-header-padding row text-center">
-                <a class="custom-link repository-detail-header" href="{{repo.url}}" target="_blank">
-                    <img class="logo-img" src="{{STATIC_URL}}/static/GitChecker/res/github-mark-white.png"/> 
+            <div class="repository-header-padding row text-center table-frame">
+                <a class="custom-link repository-detail-header" href="{{repo.url}}" target="_blank"> 
+                    {% if theme == 'light' %}
+                        <img class="logo-img" src="{{STATIC_URL}}/static/GitChecker/res/github-mark-black.png"/> 
+                    {% else %}
+                        <img class="logo-img" src="{{STATIC_URL}}/static/GitChecker/res/github-mark-white.png"/> 
+                    {% endif %}
                     {{repo.repo_name}}
                 </a>                  
             </div>
 
-            <div class="form-fields-padding row">
+            <div class="outer-frame table-frame">
+                <div>
 
-                <div class="repository-col-left col-md-2">
-                    {{ repository_form.test_dir.label }}
-                </div>
+                    <div class="form-fields-padding row form-padding-top">
 
-                <div class="repository-col-right col">
-                    {{ repository_form.test_dir }}
-                </div>
-            </div>
-
-            <div class="form-fields-padding row">
-                <div class="repository-col-left col-md-2">
-                    {{ repository_form.test_command.label }}
-                </div>
-
-                <div class="repository-col-right col">
-                    {{ repository_form.test_command }}
-                </div>
-            </div>
-
-            <div class="repository-header-padding row justify-content-center text-center form-fields-padding row">
-                <h3>Test parameters</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="row repository-param-row">
-                        <div class="col form-fields-padding">
-                            Set name
+                        <div class="repository-col-left col-md-2">
+                            {{ repository_form.test_dir.label }}
                         </div>
-                        <div class="col-md-8 form-fields-padding">
-                            <input id="id_editor_label" class="bg-dark text-white repository-param-col" type="text">
+
+                        <div class="repository-col-right col">
+                            {{ repository_form.test_dir }}
                         </div>
                     </div>
-                    <div class="row repository-param-row">
-                        <div class="col form-fields-padding">
-                            Python version
+
+                    <div class="form-fields-padding row">
+                        <div class="repository-col-left col-md-2">
+                            {{ repository_form.test_command.label }}
                         </div>
-                        <div class="col-md-8 form-fields-padding">
-                            <input id="id_editor_version" class="bg-dark text-white repository-param-col" type="text">
+
+                        <div class="repository-col-right col">
+                            {{ repository_form.test_command }}
                         </div>
                     </div>
-                    <div id="jsoneditor" class="row form-fields-padding justify-content-center text-center json-editor"></div>
-                </div>
-                <div class="col">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for form in formset %}
-                                {% if form.param_name.value is not None %}
+
+                    <div class="repository-header-padding row justify-content-center text-center form-fields-padding row">
+                        <h3>Test parameters</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row repository-param-row">
+                                <div class="col form-fields-padding">
+                                    Set name
+                                </div>
+                                <div class="col-md-8 form-fields-padding">
+                                    <input id="id_editor_label" class="roundish-field bg-dark text-white repository-param-col" type="text">
+                                </div>
+                            </div>
+                            <div class="row repository-param-row">
+                                <div class="col form-fields-padding">
+                                    Python version
+                                </div>
+                                <div class="col-md-8 form-fields-padding">
+                                    <input id="id_editor_version" class="roundish-field bg-dark text-white repository-param-col" type="text">
+                                </div>
+                            </div>
+                            <div id="jsoneditor" class="row form-fields-padding justify-content-center text-center json-editor"></div>
+                        </div>
+                        <div class="col">
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td id="{{ form.param_name.auto_id }}_table">
-                                            {{ form.param_name.value }}
-                                        <td>
-                                            <button id="{{ form.param_name.auto_id }}_edit" 
-                                                    type="button" 
-                                                    class="bg-dark text-white" 
-                                                    onclick=" editFormData('{{ form.parameters.auto_id|escapejs }}',
-                                                                           '{{ form.param_name.auto_id|escapejs }}',
-                                                                           '{{ form.version.auto_id|escapejs }}');">
-                                                    Edit
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button id="{{ form.param_name.auto_id }}_delete" 
-                                                    type="button" 
-                                                    class="bg-dark text-white" 
-                                                    onclick="deleteFormData('{{ form.DELETE.auto_id|escapejs}}',
-                                                                            '{{ form.param_name.value|escapejs }}')">Delete</button>
-                                        </td>
+                                        <th>Parameter</th>
                                     </tr>
-                                {% else %}
-                                    <td></td>
-                                    <td>
-                                        <button type="button" 
-                                                class="bg-dark text-white" 
-                                                onclick="editFormData('{{ form.parameters.auto_id|escapejs }}',
-                                                                      '{{ form.param_name.auto_id|escapejs }}',
-                                                                      '{{ form.version.auto_id|escapejs }}')">Add</button>
-                                    </td>
-                                    <td></td>
-                                {% endif %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                                </thead>
+                                <tbody>
+                                    {% for form in formset %}
+                                        {% if form.param_name.value is not None and form.param_name.value != '' %}
+                                            <tr>
+                                                <td id="{{ form.param_name.auto_id }}_table">
+                                                    {{ form.param_name.value }}                                            
+                                                <td>
+                                                    <button id="{{ form.param_name.auto_id }}_edit" 
+                                                            type="button" 
+                                                            class="roundish-button bg-dark text-white button-grid" 
+                                                            onclick=" editFormData('{{ form.parameters.auto_id|escapejs }}',
+                                                                                '{{ form.param_name.auto_id|escapejs }}',
+                                                                                '{{ form.version.auto_id|escapejs }}');">
+                                                            Edit
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button id="{{ form.param_name.auto_id }}_delete" 
+                                                            type="button" 
+                                                            class="roundish-button bg-dark text-white button-grid" 
+                                                            onclick="deleteFormData('{{ form.DELETE.auto_id|escapejs}}',
+                                                                                    '{{ form.param_name.value|escapejs }}')">Delete</button>
+                                                </td>
+                                            </tr>
+                                            {% if form.param_name.errors %}
+                                                {% for error in form.param_name.errors %}
+                                                    <tr>
+                                                        <td>
+                                                        {{ error }}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% else %}
+                                            <td></td>
+                                            <td>
+                                                <button type="button" 
+                                                        class="roundish-button bg-dark text-white button-grid" 
+                                                        onclick="editFormData('{{ form.parameters.auto_id|escapejs }}',
+                                                                            '{{ form.param_name.auto_id|escapejs }}',
+                                                                            '{{ form.version.auto_id|escapejs }}')">Add</button>
+                                            </td>
+                                            <td></td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-            <div class="submit-padding row justify-content-center text-center">
-                <div class="col-md-2">
-                    <button type="button" class="bg-dark text-white" onclick="beforeSubmit()">Save</button>
+                    <div class="submit-padding row justify-content-center text-center form-padding-bottom">
+                        <div class="col-md-2">
+                            <button type="button" class="roundish-button bg-dark text-white" onclick="beforeSubmit()">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -152,8 +171,11 @@
         </div>
     </div>
 
-    <script>
-        loadJsonEditor();
+    <script type="text/javascript">
+        $(document).ready(function() {
+            loadJsonEditor();
+            initializeToggleListener();
+        });
     </script>
-</html>
+</body>
 

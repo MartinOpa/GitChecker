@@ -6,11 +6,11 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from rest_framework.decorators import api_view
 import json
-import pandas as pd
-from plotly.offline import plot
-import plotly.express as px
+#from plotly.offline import plot
+#import plotly.express as px
 from .models import Commit, Repository, Test
 from .forms import UserForm, RegForm, RepoDetailForm, TestParametersFormSet, TestParameters
+from .views_utils import TestQueryData, get_filtered_tests, get_charts, get_date
 
 # Home page, 3 latest tests + their commits + links
 @api_view(['GET'])
@@ -38,19 +38,22 @@ def commits(request, page=1):
 
     paginator = Paginator(commits, per_page=20)
     current_page = paginator.get_page(page)
+    theme = request.COOKIES.get('theme')
+    print(theme)
 
-    return render(request, 'GitChecker/commits.html', {'current_page': current_page})
+    return render(request, 'GitChecker/commits.html', {'current_page': current_page, 'theme': theme})
 
 # Repositories with links to their detail page with test parameters
 @api_view(['GET'])
 @login_required(login_url='/login')
 def repos(request, page=1):
     repos = Repository.objects.all()
+    theme = request.COOKIES.get('theme')
 
     data = []
     for repo in repos:
         try:
-            test = Test.objects.filter(repository=repo).latest('timestamp')
+            test = Test.objects.filter(commit__repository=repo).latest('timestamp')
             latest_test = test
         except Test.DoesNotExist:
             latest_test = -1
@@ -60,19 +63,20 @@ def repos(request, page=1):
     paginator = Paginator(data, per_page=20)
     current_page = paginator.get_page(page)
 
-    return render(request, 'GitChecker/repos.html', {'current_page': current_page})
+    return render(request, 'GitChecker/repos.html', {'current_page': current_page, 'theme': theme})
 
 # Repository detail - test parameters setup
 @api_view(['GET', 'POST'])
 @login_required(login_url='/login')
 def repo_detail(request, id):
+    theme = request.COOKIES.get('theme')
     repo = Repository.objects.get(pk=id)
     if request.method == 'GET':
         repository_form = RepoDetailForm(instance=repo)
         formset = TestParametersFormSet(instance=repo)
 
         return render(request, 'GitChecker/repo.detail.html',
-                    {'repo': repo, 'repository_form': repository_form, 'formset': formset})
+                    {'repo': repo, 'repository_form': repository_form, 'formset': formset, 'theme': theme})
     else:
         repository_form = RepoDetailForm(request.POST, instance=repo)
         formset = TestParametersFormSet(request.POST, instance=repo)
@@ -85,7 +89,7 @@ def repo_detail(request, id):
             print(repository_form.errors)
             print(formset.errors)
             return render(request, 'GitChecker/repo.detail.html',
-                    {'repo': repo, 'repository_form': repository_form, 'formset': formset})
+                    {'repo': repo, 'repository_form': repository_form, 'formset': formset, 'theme': theme})
         
 # Tests with links to their detail page with logs
 @api_view(['GET'])
@@ -100,7 +104,7 @@ def tests(request, page=1):
                 query |= Q(**{f'{field.name}__icontains': search_query})
         
         query |= Q(params__param_name__icontains=search_query)
-        query |= Q(repository__repo_name__icontains=search_query)
+        query |= Q(commit__repository__repo_name__icontains=search_query)
 
         tests = Test.objects.filter(query).order_by('-timestamp')
     else:
@@ -118,7 +122,7 @@ def test_detail(request, id):
     test = Test.objects.get(pk=id)
 
     if not test.params:
-        test.params = TestParameters(repository=test.repository, param_name='set deleted', parameters={'not found': True})
+        test.params = TestParameters(repository=test.commit.repository, param_name='set deleted', parameters={'not found': True})
         
     json_data = json.dumps(test.params.parameters)
 
@@ -148,36 +152,71 @@ def test_detail(request, id):
 # Test data with charts
 @api_view(['GET'])
 @login_required(login_url='/login')
-def tests_charts(request, filter=None):
-    tests = Test.objects.all()
-    
-    if tests:
-        # data = [
-        #     {
-        #         'commit': x.commit.id,
-        #         'timestamp': x.timestamp,
-        #         'duration': x.duration,
-        #         'errors': x.errors
-        #     } for x in tests
-        # ]
-        data = [
-            {
-                'commit': 1,
-                'timestamp': 12,
-                'duration': 1,
-                'errors': 0
-            }
-        ]
-
-        df = pd.DataFrame(data)
-        fig = px.scatter(df, y="duration", x="timestamp", color="commit")
-        fig.update_layout(plot_bgcolor='#b4b4b4', paper_bgcolor='#1a242c', font=dict(color='#f0f8ff'))
-        fig.update_yaxes(range = [0, None])
-        tests_plot = plot(fig, output_type='div')
+def tests_charts(request):
+    repos = Repository.objects.all()
+    repo_id = request.GET.get('repo', -1)
+    if repo_id == -1:
+        current_repo = repos.first()
+        repo_id = current_repo.id
     else:
-        tests_plot = ''
+        try:
+            current_repo = repos.get(pk=repo_id)
+        except:
+            # No data to render
+            if request.htmx:
+                return render(request, 'GitChecker/base.charts.html')
+            return render(request, 'GitChecker/tests_charts.html')
+    
+    # Get selected metrics
+    metrics_selected = request.GET.getlist('metrics-options', [])
 
-    return render(request, 'GitChecker/tests_charts.html', {'tests_plot': tests_plot})
+    # Available params
+    repo = Repository.objects.get(id=repo_id)
+    param_select = ['Any'] 
+    param_select.extend(list(TestParameters.objects.filter(repository=repo).values_list('param_name', flat=True).distinct()))
+
+    # Query parameters for set 1
+    query1 = TestQueryData()
+    query1.param_options = param_select
+    query1.param_name = request.GET.get('param-1', 'Any')
+    query1.date_from = get_date(request, 'date-from-1')
+    query1.date_to = get_date(request, 'date-to-1')
+
+    # Query parameters for set 2
+    query2 = TestQueryData()
+    query2.param_options = param_select
+    query2.param_name = request.GET.get('param-2', 'Any')
+    query2.date_from = get_date(request, 'date-from-2')
+    query2.date_to = get_date(request, 'date-to-2')
+
+    tests2 = None
+    charts2 = None
+    # HTMX limitation
+    compare_on_str = request.GET.get('compare-on', 'false')
+    compare_on = compare_on_str == 'true'
+
+    # Theme cookie
+    theme = request.COOKIES.get('theme')
+
+    # Send set1 and metrics
+    tests1 = get_filtered_tests(repo_id, query1)
+    charts1, metrics_options = get_charts(tests1, metrics_selected, theme)
+    # If comparison mode is on send set2 as well
+    if compare_on:
+        tests2 = get_filtered_tests(repo_id, query2)
+        charts2, _ = get_charts(tests2, metrics_selected, theme)
+
+    changed = request.GET.get('changed', False)
+    # Only update charts if htmx sent the request
+    if request.htmx and not changed:
+        template = 'GitChecker/base.charts.html'
+    else:
+        template = 'GitChecker/tests_charts.html'
+
+    return render(request, template, 
+                  {'charts1': charts1, 'charts2': charts2, 'current_repo': current_repo, 
+                   'compare_on': compare_on, 'repos': repos, 'query1': query1, 'query2': query2,
+                   'metrics_options': metrics_options, 'metrics_selected': metrics_selected})
 
 # Login page
 @api_view(['GET', 'POST'])

@@ -11,8 +11,8 @@ function loadJsonEditor() {
         editFormData('id_testparameters_set-0-parameters', 'id_testparameters_set-0-param_name', 'id_testparameters_set-0-version');   
         
         // hide default Django delete checkboxes
-        var elementsContainingDelete = $("input[type='checkbox'][id*='-DELETE']");
-        elementsContainingDelete.each(function(){
+        var deleteCheckboxes = $("input[type='checkbox'][id*='-DELETE']");
+        deleteCheckboxes.each(function(){
             $(this).addClass('hidden-field');
         });
     }); 
@@ -23,8 +23,6 @@ function editFormData(form_json_id, form_label_id, form_version_id) {
         document.getElementById(current_json_id).textContent = getJsonData();
         document.getElementById(current_label_id).value = document.getElementById('id_editor_label').value;
         document.getElementById(current_version_id).value = document.getElementById('id_editor_version').value;
-
-
         //document.getElementById(current_label_id + '_table').innerText = document.getElementById(current_label_id).value;
     }
     current_json_id = form_json_id;

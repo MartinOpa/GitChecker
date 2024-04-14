@@ -26,9 +26,11 @@ SECRET_KEY = 'django-insecure-+6n^--@6h(+v(zu9n&9*jz6057@@$905-g89#p2w-95aw8q-21
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8d4d-2a02-d8a0-1c-19ef-00-1002.ngrok-free.app', 'localhost']
+ALLOWED_HOSTS = ['c65e-2a02-d8a0-1c-19ef-00-1002.ngrok-free.app', 
+                 'localhost',]
 
-CSRF_TRUSTED_ORIGINS = ['https://8d4d-2a02-d8a0-1c-19ef-00-1002.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://c65e-2a02-d8a0-1c-19ef-00-1002.ngrok-free.app',
+                        'https://api.github.com/',]
 
 # Application definition
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_htmx',
     'GitChecker',
     'bootstrap5',
     'rest_framework',
@@ -52,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 REST_FRAMEWORK = {

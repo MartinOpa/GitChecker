@@ -12,8 +12,8 @@ class UserForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
 
-        self.fields['username'].widget.attrs['class'] = 'bg-dark text-white'
-        self.fields['password'].widget.attrs['class'] = 'bg-dark text-white'        
+        self.fields['username'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
+        self.fields['password'].widget.attrs['class'] = 'roundish-field bg-dark text-white'        
 
 class RegForm(UserCreationForm):
     class Meta:
@@ -23,10 +23,10 @@ class RegForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(RegForm, self).__init__(*args, **kwargs)
 
-        self.fields['username'].widget.attrs['class'] = 'bg-dark text-white'
-        self.fields['email'].widget.attrs['class'] = 'bg-dark text-white'
-        self.fields['password1'].widget.attrs['class'] = 'bg-dark text-white'
-        self.fields['password2'].widget.attrs['class'] = 'bg-dark text-white'
+        self.fields['username'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
+        self.fields['email'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
+        self.fields['password1'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
+        self.fields['password2'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
 
 class RepoDetailForm(forms.ModelForm):
     class Meta:
@@ -36,10 +36,10 @@ class RepoDetailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RepoDetailForm, self).__init__(*args, **kwargs)
         self.fields['test_dir'].label = 'Test folder'
-        self.fields['test_command'].label = 'Executable command'
+        self.fields['test_command'].label = 'Executable'
         
-        self.fields['test_dir'].widget.attrs['class'] = 'repository-col-input bg-dark text-white'
-        self.fields['test_command'].widget.attrs['class'] = 'repository-col-input bg-dark text-white'
+        self.fields['test_dir'].widget.attrs['class'] = 'roundish-field repository-col-input bg-dark text-white'
+        self.fields['test_command'].widget.attrs['class'] = 'roundish-field repository-col-input bg-dark text-white'
 
 class TestParametersForm(forms.ModelForm):
     class Meta:

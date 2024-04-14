@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="{% static 'GitChecker/styles.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'GitChecker/res/favicon.png' %}" >
+    <script src="{{STATIC_URL}}/static/GitChecker/js/themes.js"></script>
 </head>
 <body>
     <div class="container-fluid">
@@ -19,7 +20,7 @@
             <div class="col d-flex header-padding">
                 <h3>
                     <a class="custom-link" href="/">
-                        <img class="upper-left-logo" src="{% static 'GitChecker/res/mrl.png' %}">
+                        <!-- <img class="upper-left-logo" src="{% static 'GitChecker/res/mrl.png' %}"> -->
                         Git Checker
                     </a>
                 </h3>
@@ -47,10 +48,22 @@
                             <li class="nav-item ms-auto">
                                 <a class="nav-link" href="/logout">Log out</a>
                             </li>
+                            <li class="nav-item ms-auto">
+                                <div class="theme-switch-wrapper">
+                                    <label class="theme-switch" for="checkbox">
+                                        <input type="checkbox" id="checkbox"></input>
+                                        <div class="slider round"></div>
+                                    </label>
+                               </div>                              
+                            </li>
                         </ul>
                     </div>
                 </nav>
             </div>
         </div>
     </div>
+
+    <script>
+        initialize();   
+    </script>
 </body>

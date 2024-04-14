@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.4.0.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.4.0.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.4.0.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.4.0.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.4.0.min.js"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    {% block content %}
+        {% if charts1 %}
+            {{ charts1.0|safe }}
+            {% if compare_on %}
+                <div class="row grid-padding">
+                    <div class="col grid-padding outer-frame grid-container-compare">
+                        {% for chart in charts1.1 %}
+                            <div class="grid-item">
+                                {{ chart|safe }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col grid-padding outer-frame grid-container-compare">
+                        {% if charts2 %}
+                            {{ charts2.0|safe }}
+                            {% for chart in charts2.1 %}
+                                <div class="grid-item">
+                                    {{ chart|safe }}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="grid-item" style="margin-top: 25px;">
+                                No data
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="col grid-padding outer-frame grid-container">
+                    {% for chart in charts1.1 %}
+                        <div class="grid-item">
+                            {{ chart|safe }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="center" style="margin-top: 25px;">
+                No data
+            </div>
+        {% endif %}
+    {% endblock %}
+</body>
