@@ -12,7 +12,7 @@ from .models import Commit, Repository, Test
 from .forms import UserForm, RegForm, RepoDetailForm, TestParametersFormSet, TestParameters
 from .views_utils import TestQueryData, get_filtered_tests, get_charts, get_date
 
-# Home page, 3 latest tests + their commits + links
+# Redirect to commits
 @api_view(['GET'])
 @login_required(login_url='/login')
 def home(request):
@@ -39,7 +39,6 @@ def commits(request, page=1):
     paginator = Paginator(commits, per_page=20)
     current_page = paginator.get_page(page)
     theme = request.COOKIES.get('theme')
-    print(theme)
 
     return render(request, 'GitChecker/commits.html', {'current_page': current_page, 'theme': theme})
 
