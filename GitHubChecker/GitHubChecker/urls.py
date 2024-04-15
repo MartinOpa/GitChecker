@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('webhooks/commit', webhook.post_commit),
-    #path('webhooks/postaction', webhook.postAction),
+    path('runtests', views.run_tests_manual),
     path('tests_charts/', views.tests_charts, name='tests_charts'),
     path('commits/<int:page>', views.commits, name='commits'),
     path('repos/<int:page>', views.repos, name='repos'),

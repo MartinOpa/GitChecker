@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.decorators import api_view
 import json
 #from plotly.offline import plot
@@ -11,6 +13,7 @@ import json
 from .models import Commit, Repository, Test
 from .forms import UserForm, RegForm, RepoDetailForm, TestParametersFormSet, TestParameters
 from .views_utils import TestQueryData, get_filtered_tests, get_charts, get_date
+from .test_action import run_test
 
 # Redirect to commits
 @api_view(['GET'])
@@ -216,6 +219,17 @@ def tests_charts(request):
                   {'charts1': charts1, 'charts2': charts2, 'current_repo': current_repo, 
                    'compare_on': compare_on, 'repos': repos, 'query1': query1, 'query2': query2,
                    'metrics_options': metrics_options, 'metrics_selected': metrics_selected})
+
+@api_view(['POST'])
+def run_tests_manual(request):
+    try:
+        repo_id = request.data['repo_id']
+    except:
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+    run_test(None, repo_id)
+
+    return Response({}, status=status.HTTP_200_OK)
 
 # Login page
 @api_view(['GET', 'POST'])

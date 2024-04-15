@@ -44,7 +44,7 @@ class RepoDetailForm(forms.ModelForm):
 class TestParametersForm(forms.ModelForm):
     class Meta:
         model = TestParameters
-        fields = ['param_name', 'parameters', 'version']
+        fields = ['param_name', 'parameters', 'version', 'active']
 
     def __init__(self, *args, **kwargs):
         super(TestParametersForm, self).__init__(*args, **kwargs)
@@ -54,5 +54,6 @@ class TestParametersForm(forms.ModelForm):
         self.fields['param_name'].widget.attrs['class'] = 'hidden-field'
         self.fields['parameters'].widget.attrs['class'] = 'hidden-field'
         self.fields['version'].widget.attrs['class'] = 'hidden-field'
+        self.fields['active'].widget.attrs['class'] = 'hidden-field'
 
 TestParametersFormSet = inlineformset_factory(Repository, TestParameters, form=TestParametersForm, extra=1)

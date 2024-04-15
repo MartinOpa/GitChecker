@@ -112,9 +112,9 @@ def clean_up(dir):
         pass
 
 # Function called from GitHub webhook or manually
-def run_test(commit=None):
+def run_test(commit=None, repo_id=None):
     if not commit:
-        commit = Commit.objects.latest('timestamp')
+        commit = Commit.objects.filter(repository__id=repo_id).latest('timestamp')
         if not commit:
             return
 

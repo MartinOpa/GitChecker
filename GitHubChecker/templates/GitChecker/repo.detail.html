@@ -56,19 +56,27 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="row repository-param-row">
-                                <div class="col form-fields-padding">
+                                <div class="col-md-3 form-fields-padding">
                                     Set name
                                 </div>
-                                <div class="col-md-8 form-fields-padding">
+                                <div class="col-md-9 form-fields-padding">
                                     <input id="id_editor_label" class="roundish-field bg-dark text-white repository-param-col" type="text">
                                 </div>
                             </div>
                             <div class="row repository-param-row">
-                                <div class="col form-fields-padding">
+                                <div class="col-md-3 form-fields-padding">
                                     Python version
                                 </div>
-                                <div class="col-md-8 form-fields-padding">
+                                <div class="col-md-9 form-fields-padding">
                                     <input id="id_editor_version" class="roundish-field bg-dark text-white repository-param-col" type="text">
+                                </div>
+                            </div>
+                            <div class="row repository-param-row">
+                                <div class="col-md-3 form-fields-padding">
+                                    Active
+                                </div>
+                                <div class="col-md-1 form-fields-padding">
+                                    <input id="id_editor_active" class="form-check-input" type="checkbox">
                                 </div>
                             </div>
                             <div id="jsoneditor" class="row form-fields-padding justify-content-center text-center json-editor"></div>
@@ -84,22 +92,26 @@
                                     {% for form in formset %}
                                         {% if form.param_name.value is not None and form.param_name.value != '' %}
                                             <tr>
-                                                <td id="{{ form.param_name.auto_id }}_table">
+                                                <td class="param-table" id="{{ form.param_name.auto_id }}_table">
                                                     {{ form.param_name.value }}                                            
-                                                <td>
+                                                </td>                                       
+                                                <td class="param-table">
                                                     <button id="{{ form.param_name.auto_id }}_edit" 
                                                             type="button" 
                                                             class="roundish-button bg-dark text-white button-grid" 
+                                                            style="min-width: 50px;"
                                                             onclick=" editFormData('{{ form.parameters.auto_id|escapejs }}',
                                                                                 '{{ form.param_name.auto_id|escapejs }}',
-                                                                                '{{ form.version.auto_id|escapejs }}');">
+                                                                                '{{ form.version.auto_id|escapejs }}',
+                                                                                '{{ form.active.auto_id|escapejs }}');">
                                                             Edit
                                                     </button>
                                                 </td>
-                                                <td>
+                                                <td class="param-table">
                                                     <button id="{{ form.param_name.auto_id }}_delete" 
                                                             type="button" 
                                                             class="roundish-button bg-dark text-white button-grid" 
+                                                            style="min-width: 50px;"
                                                             onclick="deleteFormData('{{ form.DELETE.auto_id|escapejs}}',
                                                                                     '{{ form.param_name.value|escapejs }}')">Delete</button>
                                                 </td>
@@ -118,9 +130,11 @@
                                             <td>
                                                 <button type="button" 
                                                         class="roundish-button bg-dark text-white button-grid" 
+                                                        style="min-width: 50px;"
                                                         onclick="editFormData('{{ form.parameters.auto_id|escapejs }}',
                                                                             '{{ form.param_name.auto_id|escapejs }}',
-                                                                            '{{ form.version.auto_id|escapejs }}')">Add</button>
+                                                                            '{{ form.version.auto_id|escapejs }}',
+                                                                            '{{ form.active.auto_id|escapejs }}')">Add</button>
                                             </td>
                                             <td></td>
                                         {% endif %}
@@ -131,8 +145,17 @@
                     </div>
 
                     <div class="submit-padding row justify-content-center text-center form-padding-bottom">
-                        <div class="col-md-2">
-                            <button type="button" class="roundish-button bg-dark text-white" onclick="beforeSubmit()">Save</button>
+                        <div>
+                            <button type="button" 
+                                    class="roundish-button bg-dark text-white" 
+                                    style="margin: 5px; min-width: 200px;" 
+                                    onclick="beforeSubmit()">Save</button>
+                            <button type="button" 
+                                    class="roundish-button bg-dark text-white" 
+                                    style="margin: 5px; min-width: 200px;" 
+                                    onclick="runTests('{{ repo.id|escapejs }}', '{{ csrf_token|escapejs }}')">
+                                    Run tests
+                            </button>
                         </div>
                     </div>
                 </div>

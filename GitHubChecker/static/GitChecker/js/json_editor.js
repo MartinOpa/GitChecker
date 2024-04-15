@@ -2,13 +2,14 @@ var editor;
 var current_json_id = '';
 var current_label_id = '';
 var current_version_id = '';
+var current_editor_active_id = '';
 
 function loadJsonEditor() {
     var container = document.getElementById("jsoneditor");
     editor = new JSONEditor(container, {mode: 'text', modes: ['text', 'code']});
 
     window.addEventListener('DOMContentLoaded', (event) => {
-        editFormData('id_testparameters_set-0-parameters', 'id_testparameters_set-0-param_name', 'id_testparameters_set-0-version');   
+        editFormData('id_testparameters_set-0-parameters', 'id_testparameters_set-0-param_name', 'id_testparameters_set-0-version', 'id_testparameters_set-0-active');   
         
         // hide default Django delete checkboxes
         var deleteCheckboxes = $("input[type='checkbox'][id*='-DELETE']");
@@ -18,19 +19,35 @@ function loadJsonEditor() {
     }); 
 }
 
-function editFormData(form_json_id, form_label_id, form_version_id) {
+function editFormData(form_json_id, form_label_id, form_version_id, form_editor_active_id) {
     if (current_json_id != '') {
         document.getElementById(current_json_id).textContent = getJsonData();
         document.getElementById(current_label_id).value = document.getElementById('id_editor_label').value;
         document.getElementById(current_version_id).value = document.getElementById('id_editor_version').value;
+        document.getElementById(current_editor_active_id).checked = document.getElementById('id_editor_active').checked;
         //document.getElementById(current_label_id + '_table').innerText = document.getElementById(current_label_id).value;
     }
     current_json_id = form_json_id;
     current_label_id = form_label_id;
     current_version_id = form_version_id;
+    current_editor_active_id = form_editor_active_id;
     editor.set(JSON.parse(document.getElementById(current_json_id).textContent));
     document.getElementById('id_editor_label').value = document.getElementById(current_label_id).value;
     document.getElementById('id_editor_version').value = document.getElementById(current_version_id).value;
+    document.getElementById('id_editor_active').checked = document.getElementById(current_editor_active_id).checked;
+}
+
+function runTests(repo_id, csrftoken) {
+    fetch(window.location.protocol + '//' + window.location.hostname + '/runtests', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({
+            'repo_id': repo_id
+        })
+    })
 }
 
 function beforeSubmit() {
@@ -38,6 +55,7 @@ function beforeSubmit() {
         document.getElementById(current_json_id).textContent = getJsonData();
         document.getElementById(current_label_id).value = document.getElementById('id_editor_label').value; 
         document.getElementById(current_version_id).value = document.getElementById('id_editor_version').value; 
+        document.getElementById(current_editor_active_id).checked = document.getElementById('id_editor_active').checked;
         document.getElementById('id_repo_detail_form').submit();
     } catch (err) {
         //alert(err);

@@ -142,6 +142,7 @@
         <div class="center">
             <div class="query-container">
                 <button id="compare" class="bg-dark text-white query-button"
+                        style="min-width: 100px;"
                         onclick="toggleCompare()">
                         Compare off
                 </button>
@@ -152,7 +153,7 @@
             <div class="query-container">
                 <button class="bg-dark text-white query-button"
                         id="update-button"
-                        style="margin-right: 5px;"
+                        style="margin-right: 5px; min-width: 100px;"
                         hx-trigger="click"
                         hx-get="{% url 'tests_charts' %}"
                         hx-target="#charts"
@@ -164,11 +165,10 @@
             </div>
             <div class="query-container">
                 <button class="bg-dark text-white query-button"
-                        style="margin-left: 5px;"
+                        style="margin-left: 5px; min-width: 100px;"
                         hx-trigger="click"
                         hx-get="{% url 'tests_charts' %}"
                         hx-vals="js:{changed: true}"
-                        hx-include="#select-repo"
                         hx-target="#all">
                         Reset
                 </button>
@@ -177,7 +177,10 @@
     </div>
 
     <div class="center">
-        <button id="hide" class="bg-dark text-white query-button hide-button" onclick="toggleMenu()">
+        <button id="hide" 
+                class="bg-dark text-white query-button hide-button" 
+                onclick="toggleMenu()"
+                style="min-width: 100px;">
                 Hide menu
         </button>
     </div>
