@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import inlineformset_factory
 from .models import Repository, TestParameters
 
+# Login form
 class UserForm(forms.Form):
     username = forms.CharField(max_length=64)
     password = forms.CharField(max_length=64, widget=forms.PasswordInput)
@@ -15,6 +16,7 @@ class UserForm(forms.Form):
         self.fields['username'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
         self.fields['password'].widget.attrs['class'] = 'roundish-field bg-dark text-white'        
 
+# Registration form
 class RegForm(UserCreationForm):
     class Meta:
         model = User
@@ -28,6 +30,7 @@ class RegForm(UserCreationForm):
         self.fields['password1'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
         self.fields['password2'].widget.attrs['class'] = 'roundish-field bg-dark text-white'
 
+# Dynamic form created using inline form set /w TestParametersForm
 class RepoDetailForm(forms.ModelForm):
     class Meta:
         model = Repository
@@ -41,6 +44,7 @@ class RepoDetailForm(forms.ModelForm):
         self.fields['test_dir'].widget.attrs['class'] = 'roundish-field repository-col-input bg-dark text-white'
         self.fields['test_command'].widget.attrs['class'] = 'roundish-field repository-col-input bg-dark text-white'
 
+# Dynamic form created using inline form set /w RepoDetailForm
 class TestParametersForm(forms.ModelForm):
     class Meta:
         model = TestParameters
@@ -51,6 +55,7 @@ class TestParametersForm(forms.ModelForm):
         
         self.fields['version'].label = 'Python version'
 
+        # Hide default fields, JavaScript takes care of data edit
         self.fields['param_name'].widget.attrs['class'] = 'hidden-field'
         self.fields['parameters'].widget.attrs['class'] = 'hidden-field'
         self.fields['version'].widget.attrs['class'] = 'hidden-field'

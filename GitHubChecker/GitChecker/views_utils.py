@@ -10,6 +10,7 @@ from bokeh.io import curdoc
 from bokeh.models import Range1d
 from .models import Test
 
+# Test query parameters
 class TestQueryData: 
     __slots__ = ['param_options', 'param_name', 'date_from', 'date_to']
 
@@ -19,6 +20,7 @@ class TestQueryData:
         self.date_from = date_from
         self.date_to = date_to
 
+# Datetime to str convert for chart filtering
 def get_date(request, id):
     date_str = request.GET.get(id, '')
     if date_str != '':
@@ -41,6 +43,7 @@ def get_filtered_tests(repo_id, query_data):
 
     return tests
 
+# Load data from d
 def prepare_datasets(test_set):
     chart_figs = {}
     for test in test_set:
@@ -78,22 +81,26 @@ def get_charts(test_set, metrics_selected, theme):
     for current_key in chart_figs:
         options.append(current_key)
 
+        # Filter by selected metrics, if none are selected display all
         if current_key in metrics_selected or len(metrics_selected) == 0:
             data = chart_figs[current_key]
             df = pd.DataFrame(data)
             source = ColumnDataSource(df)
+
             xr1 = Range1d(start=(df['timestamp'].min()) - datetime.timedelta(hours=1), 
                           end=(df['timestamp'].max()) + datetime.timedelta(hours=1))
             yr1 = Range1d(start=(df[current_key].min())*0.99, end=(df[current_key].max())*1.01)
 
             fig = figure(x_range=xr1, y_range=yr1, sizing_mode='stretch_width', height=300, active_scroll='wheel_zoom',tools='pan,wheel_zoom,box_zoom,reset')
             
+            # Apply theme from cookie
             if theme == 'light':
                 curdoc().theme = 'light_minimal'
             else:
                 curdoc().theme = 'dark_minimal'
             curdoc().add_root(fig)
 
+            # Make line chart
             fig.line(x='timestamp', y=current_key, source=source)
             fig.title.text = current_key
             fig.title.align = 'center'
@@ -105,6 +112,7 @@ def get_charts(test_set, metrics_selected, theme):
             fig.xaxis.axis_label = 'timestamp'
             fig.yaxis.axis_label = current_key
 
+            # Cycle through data and add tooltips, format timestamp
             tooltips = []
             for key, _ in data[0].items():
                 if key == 'timestamp':
@@ -112,8 +120,11 @@ def get_charts(test_set, metrics_selected, theme):
                 else:
                     tooltips.append((f'{key}', '@{' + f'{key}' + '}'))
                 
+            # For commit URLs
             tap_tool = TapTool()
             tap_tool.callback = OpenURL(url='@url')
+
+            # Display data on hover
             hover = HoverTool()
             hover.tooltips = tooltips
             hover.formatters = {

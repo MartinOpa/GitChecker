@@ -71,8 +71,8 @@ function runTests(repo_id, csrftoken) {
             } else {
                 throw new Error('Got unexpected response code: ' + response.status);
             }
-        }).catch((response) => {
-            throw new Error('Error during request catch.');
+        }).catch((error) => {
+            showModalMessage('An error occured when processing the request. ' + error);
         });    
     } catch (error) {
         showModalMessage('An error occured when processing the request. ' + error);

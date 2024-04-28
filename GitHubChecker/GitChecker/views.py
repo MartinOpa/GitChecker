@@ -221,6 +221,7 @@ def tests_charts(request):
                    'compare_on': compare_on, 'repos': repos, 'query1': query1, 'query2': query2,
                    'metrics_options': metrics_options, 'metrics_selected': metrics_selected})
 
+# Manual test execution
 @api_view(['POST'])
 def run_tests_manual(request):
     try:
@@ -228,6 +229,7 @@ def run_tests_manual(request):
     except:
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Start a separate process for the test action so that the client can get a response
     p = Process(target=run_test, args=(None, repo_id,))
     p.start()
 
@@ -276,3 +278,4 @@ def user_register(request):
 def user_log_out(request):
     logout(request)
     return redirect('login')  
+

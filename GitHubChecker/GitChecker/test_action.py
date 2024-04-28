@@ -5,6 +5,7 @@ import json
 from .models import Commit, Test, TestParameters
 from django.utils import timezone
 
+# Custom exception
 class LogNotFoundException(Exception):
     def __init__(self, message=""):
         self.message = message
@@ -27,7 +28,9 @@ def create_virtualenv(venv_dir, versions):
 def install_requirements(venv_dir, dest_dir, versions, test_dir):
     result = {}
     for version in versions:  
+        # Update pip
         subprocess.run([os.path.join(f'{venv_dir}{version}', 'bin', f'{version}'), '-m', 'pip', 'install', '--upgrade', 'pip'])
+        # Install dependencies
         output = subprocess.run([os.path.join(f'{venv_dir}{version}', 'bin', 'pip'), 'install', '-r', os.path.join(dest_dir, test_dir, 'requirements.txt')], capture_output=True, text=True)
         if output:
             result[version] = (output.returncode, output.stdout + '\n' + output.stderr)
@@ -48,6 +51,7 @@ def parse_params(parameters):
 # Run tests, get full output
 def run_tests(venv_dir, dest_dir, repo, param, parsed_params):
     activate_script = os.path.join(f'{venv_dir}{param.version}', 'bin', 'activate')
+    # Activate venv and then run test with parsed parameters
     output = subprocess.run(f'bash -c "source {activate_script} && cd {os.path.join(dest_dir, repo.test_dir)} && {param.version} {repo.test_command} {parsed_params}"',
                             shell=True, capture_output=True, text=True)
     if output:
@@ -113,14 +117,18 @@ def clean_up(dir):
 
 # Function called from GitHub webhook or manually
 def run_test(commit=None, repo_id=None):
+    # Manual execution only sends the repository id
     if not commit:
-        commit = Commit.objects.filter(repository__id=repo_id).latest('timestamp')
+        if repo_id:
+            commit = Commit.objects.filter(repository__id=repo_id).latest('timestamp')
         if not commit:
             return
-
+        
+    # Get this commit's unique path
     test_path = 'tests'
     repo = commit.repository
-    dest_dir = os.path.join(test_path, commit.hash)
+    timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M-%S')
+    dest_dir = os.path.join(test_path, f'{timestamp}{commit.hash}')
     venv_dir = os.path.join(dest_dir, 'env')
 
     versions = []
