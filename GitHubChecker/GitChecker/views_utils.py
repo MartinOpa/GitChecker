@@ -43,7 +43,7 @@ def get_filtered_tests(repo_id, query_data):
 
     return tests
 
-# Load data from d
+# Load data
 def prepare_datasets(test_set):
     chart_figs = {}
     for test in test_set:
