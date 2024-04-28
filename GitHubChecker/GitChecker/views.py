@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 import json
 #from plotly.offline import plot
 #import plotly.express as px
+from multiprocessing import Process
 from .models import Commit, Repository, Test
 from .forms import UserForm, RegForm, RepoDetailForm, TestParametersFormSet, TestParameters
 from .views_utils import TestQueryData, get_filtered_tests, get_charts, get_date
@@ -227,7 +228,8 @@ def run_tests_manual(request):
     except:
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
-    run_test(None, repo_id)
+    p = Process(target=run_test, args=(None, repo_id,))
+    p.start()
 
     return Response({}, status=status.HTTP_200_OK)
 

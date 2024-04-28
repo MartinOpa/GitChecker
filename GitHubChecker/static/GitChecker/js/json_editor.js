@@ -37,17 +37,46 @@ function editFormData(form_json_id, form_label_id, form_version_id, form_editor_
     document.getElementById('id_editor_active').checked = document.getElementById(current_editor_active_id).checked;
 }
 
+function showModalMessage(msg) {
+    var modal = $('#modal_run_tests');
+    var ok = document.getElementById('ok_run_tests');
+    var close = document.getElementById('close_run_tests');
+    document.getElementById('text_run_tests').textContent = msg;
+
+    ok.addEventListener('click', function() {  
+        modal.modal("hide");   
+    });
+
+    close.addEventListener('click', function() {   
+        modal.modal("hide");
+    });
+
+    modal.modal('show');
+}
+
 function runTests(repo_id, csrftoken) {
-    fetch(window.location.protocol + '//' + window.location.hostname + '/runtests', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken
-        },
-        body: JSON.stringify({
-            'repo_id': repo_id
-        })
-    })
+    try {
+        fetch(window.location.protocol + '//' + window.location.host + '/runtests', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                'repo_id': repo_id
+            })
+        }).then((response) => {
+            if (response.ok) {
+                showModalMessage('Test task launched successfully.');
+            } else {
+                throw new Error('Got unexpected response code: ' + response.status);
+            }
+        }).catch((response) => {
+            throw new Error('Error during request catch.');
+        });    
+    } catch (error) {
+        showModalMessage('An error occured when processing the request. ' + error);
+    }
 }
 
 function beforeSubmit() {

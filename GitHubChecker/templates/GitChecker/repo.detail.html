@@ -169,30 +169,7 @@
         </form>
     </div>
 
-    <div id="modal_delete_dialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Are you sure you wish to delete this parameter set?</h4>
-                    <button id="close_delete" type="button" class="btn-close btn-close-white"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="justify-content-center text-center">
-                        <a id="param_set_name_modal"></a>
-                    </div>
-                    <div class="form-fields-padding">
-                        All data will be lost, furthermore, 
-                        all tests associated with these parameters will only be visible
-                        in charts with the default or time period filters enabled.
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center text-center">
-                    <button id="confirm_delete" type="button" class="bg-dark text-white">Yes</button>
-                    <button id="cancel_delete" type="button" class="bg-dark text-white">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include "GitChecker/repo.detail.modals.html" %}
 
     <script type="text/javascript">
         $(document).ready(function() {

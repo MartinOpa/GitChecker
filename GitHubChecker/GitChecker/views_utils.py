@@ -107,12 +107,19 @@ def get_charts(test_set, metrics_selected, theme):
 
             tooltips = []
             for key, _ in data[0].items():
-                tooltips.append((f'{key}', f'@{key}'))
+                if key == 'timestamp':
+                    tooltips.append((f'{key}', '@timestamp{%F %T}'))
+                else:
+                    tooltips.append((f'{key}', '@{' + f'{key}' + '}'))
                 
             tap_tool = TapTool()
             tap_tool.callback = OpenURL(url='@url')
             hover = HoverTool()
             hover.tooltips = tooltips
+            hover.formatters = {
+                '@timestamp': 'datetime'
+            }
+            hover.mode = 'vline'
             
             fig.add_tools(hover, tap_tool)
             figs.append(fig)

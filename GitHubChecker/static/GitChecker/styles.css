@@ -6,6 +6,7 @@
     --highlight-nav: #b7c1ca;
     --table-background-striped: #31373d;
     --jsoneditor-frame: #212529;
+    --brightness: 100%;
 } 
 
 [data-theme="light"] {
@@ -16,6 +17,7 @@
     --highlight-nav: #6a7075;
     --table-background-striped: #d8d6d6;
     --jsoneditor-frame: #9e9e9e;
+    --brightness: 0%;
 }
 
 /* bootstrap classes override */
@@ -40,6 +42,10 @@
     --bs-table-striped-bg: var(--table-background-striped) !important;
     --bs-table-striped-color: var(--text-color) !important;
     color: var(--text-color) !important;
+}
+
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(var(--brightness)) !important;
 }
 /* bootstrap classes override */
 

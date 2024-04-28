@@ -29,7 +29,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['c65e-2a02-d8a0-1c-19ef-00-1002.ngrok-free.app', 
                  'localhost',]
 
-CSRF_TRUSTED_ORIGINS = ['https://c65e-2a02-d8a0-1c-19ef-00-1002.ngrok-free.app',
+CSRF_TRUSTED_ORIGINS = ['http://localhost/',
+                        'https://localhost/',
                         'https://api.github.com/',]
 
 # Application definition

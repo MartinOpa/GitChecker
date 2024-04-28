@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.0/jsoneditor.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.0.0/jsoneditor.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>    
+    <script src="{{STATIC_URL}}/static/GitChecker/js/json_editor.js"></script>
+    <script src="{{STATIC_URL}}/static/GitChecker/js/themes.js"></script>
+</head>
+<body>
+    <div id="modal_delete_dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure you wish to delete this parameter set?</h4>
+                    <button id="close_delete" type="button" class="btn-close btn-close-white"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="justify-content-center text-center">
+                        <a id="param_set_name_modal"></a>
+                    </div>
+                    <div class="form-fields-padding">
+                        All data will be lost, furthermore, 
+                        all tests associated with these parameters will only be visible
+                        in charts with the default or time period filters enabled.
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center text-center">
+                    <button id="confirm_delete" type="button" class="bg-dark text-white roundish-button">Yes</button>
+                    <button id="cancel_delete" type="button" class="bg-dark text-white roundish-button">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_run_tests" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Test execution</h4>
+                    <button id="close_run_tests" type="button" class="btn-close btn-close-white"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-fields-padding">
+                        <a id="text_run_tests"></a>   
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center text-center">
+                    <button id="ok_run_tests" type="button" class="bg-dark text-white roundish-button">Okay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
